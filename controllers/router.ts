@@ -9,15 +9,28 @@ router.get('/mensajes',(req: Request, res: Response)=>{
     });
 });
 
-router.post('/mensajes',(req: Request, res: Response)=>{
+router.post('/mensapos',(req: Request, res: Response)=>{
     const user = req.body.user;
     const pass = req.body.pass;
+    const json_ = req.body;
     
+    if (json_.user === undefined)
+    {
+        res.status(400).json({
+            ok: false,
+            mensaje: "user vacio"
+        })
+    }
+
     res.json({
         ok: true,
         user,
         pass
     });
+    
+    /*res.json({
+        json_
+    });*/
 });
 
 

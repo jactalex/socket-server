@@ -1,7 +1,12 @@
 import {Router, Request, Response} from 'express';
 import usuariosEntt  from '../entt/usuarioEntt';
 import { Usuarios } from "../models/usuarioModels";
+import { CADUCIDA_TOKEN, SECRET } from '../global/environment';
 export const router_usuario =Router();
+import  jwt = require('jsonwebtoken');
+
+
+
  
 router_usuario.get('/listarUsuario',(req: Request, res: Response)=>{
     Usuarios.listar((err:any, usuarios:usuariosEntt[] )=>
@@ -19,18 +24,23 @@ router_usuario.get('/listarUsuario',(req: Request, res: Response)=>{
 });
 
 
-router_usuario.get('/ConsultarUser',(req: Request, res: Response)=>{
+router_usuario.post('/login',(req: Request, res: Response)=>{
 
-    const id = '1234';
-    Usuarios.consultar_usuarios(id, (err:any, usuarios:usuariosEntt[] )=>
+    const id = req.body.user;
+    Usuarios.consultar_usuarios(id, (err:any, login:usuariosEntt[] )=>
     {
         if(err)
         {
             return {err};
         }
         else{
+            let token= jwt.sign({
+                usuario: id
+            },SECRET, {expiresIn: CADUCIDA_TOKEN});
+
             res.json({
-                usuarios
+                login,
+                token: token
             });   
         }
      });

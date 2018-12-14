@@ -2,6 +2,7 @@ import {Router, Request, Response} from 'express'
 import Mysql from '../global/mysql';
 import usuariosEntt from "../entt/usuarioEntt";
 
+
 export class Usuarios{
    
     static listar(callback: Function){
